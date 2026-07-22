@@ -1,4 +1,4 @@
-# Week {05}: {DOM Manipulation}
+# Week 05: DOM Manipulation
 
 ## Author
 - **Name:** Okolla Immaculate Akinyi
