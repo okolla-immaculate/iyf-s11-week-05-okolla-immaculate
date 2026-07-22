@@ -1,9 +1,9 @@
-# Week {Number}: {Project Title}
+# Week {05}: {DOM Manipulation}
 
 ## Author
 - **Name:** Okolla Immaculate Akinyi
-- **GitHub:** [@MaisoriKitayama](https://github.com/okolla-immaculate)
-- **Date:** 07 19, 2026
+- **GitHub:** [@okolla-immaculate](https://github.com/okolla-immaculate)
+- **Date:** 07- 19-2026
 
 ## Project Description
 I learnt how to use DOM and apply it using Javascript.
