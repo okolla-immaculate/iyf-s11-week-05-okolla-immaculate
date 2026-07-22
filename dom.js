@@ -179,3 +179,304 @@ const navItem = document.querySelector(".nav-link").parentElement;
 const clone = navItem.cloneNode(true);  // true = deep clone
 clone.querySelector("a").textContent = "New Link";
 document.querySelector(".nav-list").appendChild(clone);
+
+//Dynamically adding navigation
+function addNavItem(text, href) {
+    const navList = document.querySelector(".nav-list");
+// Create li with a.nav-link inside
+    const li = document.createElement("li");
+    const link = document.createElement("a");
+
+    link.textContent = text;
+    link.href = href;
+    link.classList.add("nav-link");
+    
+    li.appendChild(link);
+    navList.appendChild(li);
+}
+
+addNavItem("Blog", "/blog");
+addNavItem("Portfolio", "/portfolio");
+
+
+//Event listeners
+const button = document.createElement("button");
+button.textContent = "Click Me";
+document.body.appendChild(button);
+
+// Adding event listeners
+button.addEventListener("click", function() {
+    console.log("Button clicked!");
+});
+
+// Arrow function
+button.addEventListener("click", () => {
+    console.log("Clicked again!");
+});
+
+// Named function (can be removed later)
+function handleClick() {
+    console.log("Handled!");
+}
+button.addEventListener("click", handleClick);
+
+// Remove event listener
+button.removeEventListener("click", handleClick);
+
+// Mouse events
+const input = document.querySelector("#email");
+
+function handler(event) {
+    console.log(event.type);
+}
+
+element.addEventListener("click", handler);
+element.addEventListener("dblclick", handler);
+element.addEventListener("mouseenter", handler);
+element.addEventListener("mouseleave", handler);
+element.addEventListener("mousemove", handler);
+
+// Keyboard events
+input.addEventListener("keydown", handler);
+input.addEventListener("keyup", handler);
+input.addEventListener("keypress", handler);  // Deprecated
+
+// Form events
+form.addEventListener("submit", handler);
+input.addEventListener("focus", handler);
+input.addEventListener("blur", handler);
+input.addEventListener("input", handler);     // Real-time changes
+input.addEventListener("change", handler);    // On blur after change
+
+// Window events
+window.addEventListener("load", handler);
+window.addEventListener("resize", handler);
+window.addEventListener("scroll", handler);
+
+// Create counter display
+let count = 0;
+
+const counter = document.createElement("h2");
+counter.textContent = count;
+
+// Create buttons
+const increaseBtn = document.createElement("button");
+increaseBtn.textContent = "+";
+
+const decreaseBtn = document.createElement("button");
+decreaseBtn.textContent = "-";
+
+const resetBtn = document.createElement("button");
+resetBtn.textContent = "Reset";
+
+// Add elements to the page
+document.body.appendChild(counter);
+document.body.appendChild(increaseBtn);
+document.body.appendChild(decreaseBtn);
+document.body.appendChild(resetBtn);
+
+// Increase count
+increaseBtn.addEventListener("click", () => {
+    count++;
+    counter.textContent = count;
+});
+
+// Decrease count (don't go below 0)
+decreaseBtn.addEventListener("click", () => {
+    if (count > 0) {
+        count--;
+        counter.textContent = count;
+    }
+});
+
+// Reset count
+resetBtn.addEventListener("click", () => {
+    count = 0;
+    counter.textContent = count;
+});
+
+//using event properties
+document.addEventListener("click", function(event) {
+    // The element that was clicked
+    console.log("Target:", event.target);
+    
+    // The element the listener is attached to
+    console.log("Current Target:", event.currentTarget);
+    
+    // Event type
+    console.log("Type:", event.type);
+    
+    // Mouse position
+    console.log("Position:", event.clientX, event.clientY);
+    
+    // Prevent default behavior
+    event.preventDefault();
+    
+    // Stop propagation (bubbling)
+    event.stopPropagation();
+});
+
+// Keyboard events
+document.addEventListener("keydown", function(event) {
+    console.log("Key:", event.key);       // "a", "Enter", "Escape"
+    console.log("Code:", event.code);     // "KeyA", "Enter", "Escape"
+    console.log("Shift:", event.shiftKey);
+    console.log("Ctrl:", event.ctrlKey);
+    console.log("Alt:", event.altKey);
+});
+
+
+const inputs = document.querySelectorAll("input");
+
+document.addEventListener("keydown", function (event) {
+
+    // Ctrl + S
+    if (event.ctrlKey && event.key.toLowerCase() === "s") {
+        event.preventDefault(); // Prevent browser Save dialog
+        alert("Saved!");
+    }
+
+    // Escape
+    if (event.key === "Escape") {
+        inputs.forEach(input => {
+            input.value = "";
+        });
+    }
+
+    // Ctrl + Enter
+    if (event.ctrlKey && event.key === "Enter") {
+        event.preventDefault();
+        form.requestSubmit(); // Submit the form
+    }
+
+});
+
+//Event bubbling and delegation
+document.getElementById("grandparent").addEventListener("click", () => {
+    console.log("Grandparent clicked");
+});
+
+document.getElementById("parent").addEventListener("click", () => {
+    console.log("Parent clicked");
+});
+
+document.getElementById("child").addEventListener("click", () => {
+    console.log("Child clicked");
+});
+
+// Click on Child - what order do the logs appear?
+// Answer: Child → Parent → Grandparent (bubbling up)
+
+
+//Event delegation
+// BAD: Adding listeners to each item
+const items = document.querySelectorAll("li");
+items.forEach(item => {
+    item.addEventListener("click", handleClick);
+});
+// Problem: New items won't have the listener!
+
+// GOOD: Delegate to parent
+document.querySelector("ul").addEventListener("click", function(event) {
+    // Check if clicked element is an li
+    if (event.target.matches("li")) {
+        handleClick(event);
+    }
+    
+    // Or check for a class
+    if (event.target.classList.contains("item")) {
+        handleClick(event);
+    }
+});
+
+const taskInput = document.getElementById("taskInput");
+const addTaskBtn = document.getElementById("addTask");
+const taskList = document.getElementById("taskList");
+
+// Add a new task
+addTaskBtn.addEventListener("click", () => {
+    const task = taskInput.value.trim();
+
+    if (task === "") return;
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+        <span>${task}</span>
+        <button class="delete">Delete</button>
+    `;
+
+    taskList.appendChild(li);
+    taskInput.value = "";
+});
+
+// ONE event listener on the parent <ul>
+taskList.addEventListener("click", (event) => {
+
+    // Delete task
+    if (event.target.classList.contains("delete")) {
+        event.target.parentElement.remove();
+        return;
+    }
+
+    // Toggle completed class
+    if (event.target.tagName === "SPAN") {
+        event.target.classList.toggle("completed");
+    }
+});
+
+//Form handling
+
+const nameInput = document.getElementById("name");
+
+
+// Real-time validation
+nameInput.addEventListener("input", function(event) {
+    const value = event.target.value;
+    
+    if (value.length < 2) {
+        showError(nameInput, "Name must be at least 2 characters");
+    } else {
+        clearError(nameInput);
+    }
+});
+
+emailInput.addEventListener("input", function(event) {
+    const value = event.target.value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!emailRegex.test(value)) {
+        showError(emailInput, "Please enter a valid email");
+    } else {
+        clearError(emailInput);
+    }
+});
+
+// Form submission
+form.addEventListener("submit", function(event) {
+    event.preventDefault();  // Stop form from submitting
+    
+    // Get all form data
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+    
+    console.log("Form data:", data);
+    
+    // Validate all fields
+    if (isValid(data)) {
+        // Submit via fetch or show success
+        showSuccess("Form submitted successfully!");
+        form.reset();
+    }
+});
+
+function showError(input, message) {
+    // Add error styling and message
+    input.classList.add("error");
+    // Create or update error message element
+}
+
+function clearError(input) {
+    input.classList.remove("error");
+    // Remove error message
+}
+
